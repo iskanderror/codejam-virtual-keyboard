@@ -77,12 +77,9 @@ window.addEventListener('load', drawElements, false);
 document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
 
-
-
 function onKeyDown(event){
   event.preventDefault();
   let textEditor = document.getElementById("textEditor");
-  textEditor.focus();
 
   if(event.code=="CapsLock" && !event.repeat){
     alternateSymbol = !alternateSymbol;
@@ -99,37 +96,67 @@ function onKeyDown(event){
     }
   });
 
+  let currentSymbol;
   switch (event.code){
     case 'ShiftLeft':
     case 'ShiftRight':
     case 'CapsLock':
+    case 'MetaLeft':
+
     case 'ControlLeft':
     case 'ControlRight':
-    case 'MetaLeft':
     case 'AltLeft':
     case 'AltRight':
-    case 'Backspace':
-    case 'Enter':
+
     case 'ArrowLeft':
     case 'ArrowRight':
     case 'ArrowUp':
     case 'ArrowDown':
+      break;
+
+    case 'Enter':
+      currentSymbol = "\n";
+      break;
+
     case 'Tab':
+      currentSymbol = "\t";
+      break;
+    
+    case 'Backspace':
+      removeText(textEditor);
       break;
     
     default:
-      let currentSymbol = getButtonSymbol(event.code,'EN', alternateSymbol != event.shiftKey );
-      if (currentSymbol !== undefined){
-        textEditor.value += currentSymbol;
-      }
+      currentSymbol = getButtonSymbol(event.code,'EN', alternateSymbol != event.shiftKey );
       break;
   }
 
+  if (currentSymbol !== undefined){
+    insertText(textEditor,currentSymbol);
+  }
+}
+
+function insertText(textArea, text){
+  let p_start = textArea.selectionStart;
+  let p_end = textArea.selectionEnd;
+  textArea.value = textArea.value.substring(0,p_start) + text + textArea.value.substring(p_end,textArea.value.length);
+  textArea.setSelectionRange(p_start + text.length,p_start + text.length);
+}
+
+function removeText(textArea){
+  let p_start = textArea.selectionStart;
+  let p_end = textArea.selectionEnd;
+  if(p_start == p_end){
+    if (p_start > 0){
+      p_start--;
+    } 
+  }
+  textArea.value = textArea.value.substring(0,p_start) + textArea.value.substring(p_end,textArea.value.length);
+  textArea.setSelectionRange(p_start,p_start);
 }
 
 function onKeyUp(event) {
   event.preventDefault();
-  let textEditor = document.getElementById("textEditor");
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
     if(element.id==event.code){
@@ -138,11 +165,6 @@ function onKeyUp(event) {
   });
 }
 
-/*
-if (event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-  alert('Отменить!')
-}
-*/
 function getButtonSymbol(keycode, language='EN', alternate=false){
   let keyConfig = keyboardConfigFlat.find( (item) => item['keycode'] == keycode );
   if(keyConfig===undefined) {
@@ -157,14 +179,13 @@ function getButtonSymbol(keycode, language='EN', alternate=false){
 
 function drawElements() {
   let textEditorWrapper = document.createElement("div");
-  //textEditorWrapper.innerHTML = `<input type="text">`;
-  let textEditor = document.createElement("input");
+  let textEditor = document.createElement("textarea");
   textEditor.classList.add("textInput");
   textEditor.id = "textEditor";
-  textEditor.type = "text";
+  textEditor.placeholder = 'Just type and have fun!';
   textEditorWrapper.append(textEditor);
   document.body.append(textEditorWrapper);
-  textEditor.focus();
+  textEditor.autofocus = true;
 
   let keyboardWrapper = document.createElement("div");
   keyboardWrapper.classList.add("keyboard")
