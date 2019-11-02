@@ -82,23 +82,49 @@ document.addEventListener('keyup', onKeyUp);
 function onKeyDown(event){
   event.preventDefault();
   let textEditor = document.getElementById("textEditor");
-  textEditor.value = event.code;
+  textEditor.focus();
 
-  if(event.code=="CapsLock"){
-    alternateSymbol = !alternateSymbol;
-  }
-
-  if( event.shiftKey ){
+  if(event.code=="CapsLock" && !event.repeat){
     alternateSymbol = !alternateSymbol;
   }
 
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
-    updateButtonText(element,'EN',alternateSymbol);
+    let newSymbol = getButtonSymbol(element.id,'EN',alternateSymbol);
+    if(newSymbol!==undefined){
+      element.innerText = newSymbol;
+    }
     if(element.id==event.code){
       element.style.cssText += "background-color: blueviolet;";
     }
   });
+
+  switch (event.code){
+    case 'ShiftLeft':
+    case 'ShiftRight':
+    case 'CapsLock':
+    case 'ControlLeft':
+    case 'ControlRight':
+    case 'MetaLeft':
+    case 'AltLeft':
+    case 'AltRight':
+    case 'Backspace':
+    case 'Enter':
+    case 'ArrowLeft':
+    case 'ArrowRight':
+    case 'ArrowUp':
+    case 'ArrowDown':
+    case 'Tab':
+      break;
+    
+    default:
+      let currentSymbol = getButtonSymbol(event.code,'EN', alternateSymbol != event.shiftKey );
+      if (currentSymbol !== undefined){
+        textEditor.value += currentSymbol;
+      }
+      break;
+  }
+
 }
 
 function onKeyUp(event) {
@@ -117,15 +143,15 @@ if (event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
   alert('Отменить!')
 }
 */
-function updateButtonText(element, language='EN', alternate=false){
-  let keyConfig = keyboardConfigFlat.find( (item) => item['keycode']==element.id );
+function getButtonSymbol(keycode, language='EN', alternate=false){
+  let keyConfig = keyboardConfigFlat.find( (item) => item['keycode'] == keycode );
   if(keyConfig===undefined) {
     return;
   }
   if(!alternate) {
-    element.innerText = keyConfig['content'][language]['symbol'];
+    return keyConfig['content'][language]['symbol'];
   } else {
-    element.innerText = keyConfig['content'][language]['symbolExt'];
+    return keyConfig['content'][language]['symbolExt'];
   }
 }
 
@@ -138,6 +164,7 @@ function drawElements() {
   textEditor.type = "text";
   textEditorWrapper.append(textEditor);
   document.body.append(textEditorWrapper);
+  textEditor.focus();
 
   let keyboardWrapper = document.createElement("div");
   keyboardWrapper.classList.add("keyboard")
