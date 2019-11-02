@@ -1,5 +1,5 @@
 {
-  "name": "repair-design",
+  "name": "codejam-virtual-keyboard",
   "version": "1.0.0",
   "description": "repair-design task to RSSchool",
   "main": "index.js",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iskanderror/repair-design-project.git"
+    "url": "git+https://github.com/iskanderror/codejam-virtual-keyboard.git"
   },
   "author": "Iskanderror",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iskanderror/repair-design-project/issues"
+    "url": "https://github.com/iskanderror/codejam-virtual-keyboard/issues"
   },
-  "homepage": "https://github.com/iskanderror/repair-design-project#readme",
+  "homepage": "https://github.com/iskanderror/codejam-virtual-keyboard#readme",
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
@@ -36,7 +36,7 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "webpack": "^4.41.0",
+    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2"
   },

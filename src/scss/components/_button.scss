@@ -1,3 +1,27 @@
+.keyboard {
+  max-width: 70%;
+  margin: 20px auto 0;
+  font-size: 30px;
+  line-height: 60px;
+  background-color: grey;
+
+  &--keystring{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    
+  }
+  &--button {
+    flex: 1;
+    margin: 5px;
+    padding: 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightblue;
+  }
+}
+
 .button {
   height: 51px;
   width: 100%;
