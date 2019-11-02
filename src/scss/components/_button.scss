@@ -7,38 +7,13 @@
   &--keystring{
     display: flex;
     align-items: stretch;
-    justify-content: space-between;
-    
+    justify-content: space-between;  
   }
+
   &--button {
     margin: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-  }
-
-}
-
-.button {
-  height: 51px;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  background-color: $keyProjectColor;
-  font-family: FuturaDemiC, Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 13px;
-  line-height: 15px;
-  text-align: center;
-  text-transform: uppercase;
-  color: $textColor;
-
-  &:hover {
-    cursor: pointer;
-    background-color: $keyHoverColor;
-  }
-
-  &-color-transparent{
-    border: 1px solid $textColor;
-    background-color: $transparentColor;
   }
 }

@@ -80,17 +80,10 @@ document.addEventListener('keyup', onKeyUp);
 function onKeyDown(event){
   event.preventDefault();
   let textEditor = document.getElementById("textEditor");
-
-  if(event.code=="CapsLock" && !event.repeat){
-    alternateSymbol = !alternateSymbol;
-  }
+  textEditor.focus();
 
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
-    let newSymbol = getButtonSymbol(element.id,'EN',alternateSymbol);
-    if(newSymbol!==undefined){
-      element.innerText = newSymbol;
-    }
     if(element.id==event.code){
       element.style.cssText += "background-color: blueviolet;";
     }
@@ -100,16 +93,33 @@ function onKeyDown(event){
   switch (event.code){
     case 'ShiftLeft':
     case 'ShiftRight':
-    case 'CapsLock':
     case 'MetaLeft':
+      break;
+
+    case 'CapsLock':
+      if(!event.repeat) {
+        alternateSymbol = !alternateSymbol;
+        keyboard.forEach( function(element){
+          let newSymbol = getButtonSymbol(element.id,'EN',alternateSymbol);
+          if(newSymbol!==undefined){
+            element.innerText = newSymbol;
+          }
+        });
+      }
+      break;
 
     case 'ControlLeft':
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
+      break;
 
     case 'ArrowLeft':
+      moveCursorLeft(textEditor, event.shiftKey);
+      break;
     case 'ArrowRight':
+      moveCursorRight(textEditor, event.shiftKey);
+      break;
     case 'ArrowUp':
     case 'ArrowDown':
       break;
@@ -155,6 +165,38 @@ function removeText(textArea){
   textArea.setSelectionRange(p_start,p_start);
 }
 
+function moveCursorLeft(textArea, select=false){
+  let p_start = textArea.selectionStart;
+  let p_end = textArea.selectionEnd;
+  if(select) {
+    if (p_start>0) {
+      p_start--;
+    }
+  } else {
+    if(p_start==p_end && p_start>0) {
+      p_start--;
+    }
+    p_end = p_start;
+  }
+  textArea.setSelectionRange(p_start,p_end);
+}
+
+function moveCursorRight(textArea, select=false){
+  let p_start = textArea.selectionStart;
+  let p_end = textArea.selectionEnd;
+  if(select){
+    if (p_end < textArea.value.length) {
+      p_end++;
+    }
+  } else {
+    if(p_start==p_end && p_end < textArea.value.length) {
+      p_end++;
+    }
+    p_start = p_end;
+  }
+  textArea.setSelectionRange(p_start,p_end);
+}
+
 function onKeyUp(event) {
   event.preventDefault();
   let keyboard = document.querySelectorAll(".keyboard--button");
@@ -195,11 +237,11 @@ function drawElements() {
     keyString.classList.add("keyboard--keystring");
     for (let j=0; j<keyStringConfig.length;j++){
       let keyConfig = keyStringConfig[j];
+      
       let key = document.createElement("div");
       key.id = keyConfig['keycode'];
       key.classList.add("keyboard--button");
       key.innerText = keyConfig['content']['EN']['symbol'];
-      
       key.style.cssText += "height:60px; background-color: lightblue;" 
       let keyWidth = 80*Number(keyConfig['scale']);
       if(keyWidth !== undefined){
