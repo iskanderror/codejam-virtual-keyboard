@@ -71,6 +71,7 @@ const keyboardConfig = [
 ]
 
 let alternateSymbol = false;
+let currentLanguage = 'EN';
 let keyboardConfigFlat = keyboardConfig.flat(Infinity);
 
 window.addEventListener('load', drawElements, false);
@@ -99,12 +100,7 @@ function onKeyDown(event){
     case 'CapsLock':
       if(!event.repeat) {
         alternateSymbol = !alternateSymbol;
-        keyboard.forEach( function(element){
-          let newSymbol = getButtonSymbol(element.id,'EN',alternateSymbol);
-          if(newSymbol!==undefined){
-            element.innerText = newSymbol;
-          }
-        });
+        updateKeyboard();
       }
       break;
 
@@ -112,6 +108,12 @@ function onKeyDown(event){
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
+      if (currentLanguage == 'RU') {
+        currentLanguage = 'EN';
+      } else {
+        currentLanguage = 'RU';
+      }
+      updateKeyboard();
       break;
 
     case 'ArrowLeft':
@@ -137,13 +139,23 @@ function onKeyDown(event){
       break;
     
     default:
-      currentSymbol = getButtonSymbol(event.code,'EN', alternateSymbol != event.shiftKey );
+      currentSymbol = getButtonSymbol(event.code, currentLanguage, alternateSymbol != event.shiftKey );
       break;
   }
 
   if (currentSymbol !== undefined){
     insertText(textEditor,currentSymbol);
   }
+}
+
+function updateKeyboard(){
+  let keyboard = document.querySelectorAll(".keyboard--button");
+  keyboard.forEach( function(element){
+    let newSymbol = getButtonSymbol(element.id, currentLanguage, alternateSymbol);
+    if(newSymbol!==undefined){
+      element.innerText = newSymbol;
+    }
+  });
 }
 
 function insertText(textArea, text){
