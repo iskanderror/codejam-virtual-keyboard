@@ -11,9 +11,26 @@
   }
 
   &--button {
+    position: relative;
     margin: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    user-select: none;
+  
+    &-symbol {
+      margin: 0;
+    }
+
+    &-alternate {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      margin: 0;
+      font-size: 18px;
+      color: grey;
+      background-color: transparent;
+    }
   }
+
 }

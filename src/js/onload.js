@@ -1,79 +1,79 @@
 const keyboardConfig = [
   [
-    {scale:'1', keycode: 'Backquote', content: {'EN': {symbol: '`', symbolExt: '~'}, 'RU': {symbol: 'ё', symbolExt: 'Ё'}}},
-    {scale:'1', keycode: 'Digit1', content: {'EN': {symbol: '1', symbolExt: '!'}, 'RU': {symbol: '1', symbolExt: '!'}}},
-    {scale:'1', keycode: 'Digit2', content: {'EN': {symbol: '2', symbolExt: '@'}, 'RU': {symbol: '2', symbolExt: '"'}}},
-    {scale:'1', keycode: 'Digit3', content: {'EN': {symbol: '3', symbolExt: '#'}, 'RU': {symbol: '3', symbolExt: '№'}}},
-    {scale:'1', keycode: 'Digit4', content: {'EN': {symbol: '4', symbolExt: '$'}, 'RU': {symbol: '4', symbolExt: ';'}}},
-    {scale:'1', keycode: 'Digit5', content: {'EN': {symbol: '5', symbolExt: '%'}, 'RU': {symbol: '5', symbolExt: '%'}}},
-    {scale:'1', keycode: 'Digit6', content: {'EN': {symbol: '6', symbolExt: '^'}, 'RU': {symbol: '6', symbolExt: ': '}}},
-    {scale:'1', keycode: 'Digit7', content: {'EN': {symbol: '7', symbolExt: '&'}, 'RU': {symbol: '7', symbolExt: '?'}}},
-    {scale:'1', keycode: 'Digit8', content: {'EN': {symbol: '8', symbolExt: '*'}, 'RU': {symbol: '8', symbolExt: '*'}}},
-    {scale:'1', keycode: 'Digit9', content: {'EN': {symbol: '9', symbolExt: '('}, 'RU': {symbol: '9', symbolExt: '('}}},
-    {scale:'1', keycode: 'Digit0', content: {'EN': {symbol: '0', symbolExt: ')'}, 'RU': {symbol: '0', symbolExt: ')'}}},
-    {scale:'1', keycode: 'Minus', content: {'EN': {symbol: '-', symbolExt: '_'}, 'RU': {symbol: '-', symbolExt: '_'}}},
-    {scale:'1', keycode: 'Equal', content: {'EN': {symbol: '=', symbolExt: '+'}, 'RU': {symbol: '=', symbolExt: '+'}}},
-    {scale:'1.5', keycode: 'Backspace', content: {'EN': {symbol: 'Backspace', symbolExt: 'Backspace'}, 'RU': {symbol: 'Backspace', symbolExt: 'Backspace'}}},
+    {scale:'1', keycode: 'Backquote', content: {'EN': {symbol: '`', alternate: '~'}, 'RU': {symbol: 'ё', alternate: 'Ё'}}},
+    {scale:'1', keycode: 'Digit1', content: {'EN': {symbol: '1', alternate: '!'}, 'RU': {symbol: '1', alternate: '!'}}},
+    {scale:'1', keycode: 'Digit2', content: {'EN': {symbol: '2', alternate: '@'}, 'RU': {symbol: '2', alternate: '"'}}},
+    {scale:'1', keycode: 'Digit3', content: {'EN': {symbol: '3', alternate: '#'}, 'RU': {symbol: '3', alternate: '№'}}},
+    {scale:'1', keycode: 'Digit4', content: {'EN': {symbol: '4', alternate: '$'}, 'RU': {symbol: '4', alternate: ';'}}},
+    {scale:'1', keycode: 'Digit5', content: {'EN': {symbol: '5', alternate: '%'}, 'RU': {symbol: '5', alternate: '%'}}},
+    {scale:'1', keycode: 'Digit6', content: {'EN': {symbol: '6', alternate: '^'}, 'RU': {symbol: '6', alternate: ': '}}},
+    {scale:'1', keycode: 'Digit7', content: {'EN': {symbol: '7', alternate: '&'}, 'RU': {symbol: '7', alternate: '?'}}},
+    {scale:'1', keycode: 'Digit8', content: {'EN': {symbol: '8', alternate: '*'}, 'RU': {symbol: '8', alternate: '*'}}},
+    {scale:'1', keycode: 'Digit9', content: {'EN': {symbol: '9', alternate: '('}, 'RU': {symbol: '9', alternate: '('}}},
+    {scale:'1', keycode: 'Digit0', content: {'EN': {symbol: '0', alternate: ')'}, 'RU': {symbol: '0', alternate: ')'}}},
+    {scale:'1', keycode: 'Minus', content: {'EN': {symbol: '-', alternate: '_'}, 'RU': {symbol: '-', alternate: '_'}}},
+    {scale:'1', keycode: 'Equal', content: {'EN': {symbol: '=', alternate: '+'}, 'RU': {symbol: '=', alternate: '+'}}},
+    {scale:'1.5', keycode: 'Backspace', content: {'EN': {symbol: 'Backspace', alternate: 'Backspace'}, 'RU': {symbol: 'Backspace', alternate: 'Backspace'}}},
   ], [
-    {scale: '1.5', keycode: 'Tab', content: {'EN': {symbol: 'Tab', symbolExt: 'Tab'}, 'RU': {symbol: 'Tab', symbolExt: 'Tab'}}},
-    {scale: '1', keycode: 'KeyQ', content: {'EN': {symbol: 'q', symbolExt: 'Q'}, 'RU': {symbol: 'й', symbolExt: 'Й'}}},
-    {scale: '1', keycode: 'KeyW', content: {'EN': {symbol: 'w', symbolExt: 'W'}, 'RU': {symbol: 'ц', symbolExt: 'Ц'}}},
-    {scale: '1', keycode: 'KeyE', content: {'EN': {symbol: 'e', symbolExt: 'E'}, 'RU': {symbol: 'у', symbolExt: 'У'}}},
-    {scale: '1', keycode: 'KeyR', content: {'EN': {symbol: 'r', symbolExt: 'R'}, 'RU': {symbol: 'к', symbolExt: 'К'}}},
-    {scale: '1', keycode: 'KeyT', content: {'EN': {symbol: 't', symbolExt: 'T'}, 'RU': {symbol: 'е', symbolExt: 'Е'}}},
-    {scale: '1', keycode: 'KeyY', content: {'EN': {symbol: 'y', symbolExt: 'Y'}, 'RU': {symbol: 'н', symbolExt: 'Н'}}},
-    {scale: '1', keycode: 'KeyU', content: {'EN': {symbol: 'u', symbolExt: 'U'}, 'RU': {symbol: 'г', symbolExt: 'Г'}}},
-    {scale: '1', keycode: 'KeyI', content: {'EN': {symbol: 'i', symbolExt: 'I'}, 'RU': {symbol: 'ш', symbolExt: 'Ш'}}},
-    {scale: '1', keycode: 'KeyO', content: {'EN': {symbol: 'o', symbolExt: 'O'}, 'RU': {symbol: 'щ', symbolExt: 'Щ'}}},
-    {scale: '1', keycode: 'KeyP', content: {'EN': {symbol: 'p', symbolExt: 'P'}, 'RU': {symbol: 'з', symbolExt: 'З'}}},
-    {scale: '1', keycode: 'BracketLeft', content: {'EN': {symbol: '[', symbolExt: '['}, 'RU': {symbol: 'х', symbolExt: 'Х'}}},
-    {scale: '1', keycode: 'BracketRight', content: {'EN': {symbol: ']', symbolExt: ']'}, 'RU': {symbol: 'ъ', symbolExt: 'Ъ'}}},
-    {scale: '1', keycode: 'Backslash', content: {'EN': {symbol: '\\', symbolExt: '|'}, 'RU': {symbol: '\\', symbolExt: '/'}}},
+    {scale: '1.5', keycode: 'Tab', content: {'EN': {symbol: 'Tab', alternate: 'Tab'}, 'RU': {symbol: 'Tab', alternate: 'Tab'}}},
+    {scale: '1', keycode: 'KeyQ', content: {'EN': {symbol: 'q', alternate: 'Q'}, 'RU': {symbol: 'й', alternate: 'Й'}}},
+    {scale: '1', keycode: 'KeyW', content: {'EN': {symbol: 'w', alternate: 'W'}, 'RU': {symbol: 'ц', alternate: 'Ц'}}},
+    {scale: '1', keycode: 'KeyE', content: {'EN': {symbol: 'e', alternate: 'E'}, 'RU': {symbol: 'у', alternate: 'У'}}},
+    {scale: '1', keycode: 'KeyR', content: {'EN': {symbol: 'r', alternate: 'R'}, 'RU': {symbol: 'к', alternate: 'К'}}},
+    {scale: '1', keycode: 'KeyT', content: {'EN': {symbol: 't', alternate: 'T'}, 'RU': {symbol: 'е', alternate: 'Е'}}},
+    {scale: '1', keycode: 'KeyY', content: {'EN': {symbol: 'y', alternate: 'Y'}, 'RU': {symbol: 'н', alternate: 'Н'}}},
+    {scale: '1', keycode: 'KeyU', content: {'EN': {symbol: 'u', alternate: 'U'}, 'RU': {symbol: 'г', alternate: 'Г'}}},
+    {scale: '1', keycode: 'KeyI', content: {'EN': {symbol: 'i', alternate: 'I'}, 'RU': {symbol: 'ш', alternate: 'Ш'}}},
+    {scale: '1', keycode: 'KeyO', content: {'EN': {symbol: 'o', alternate: 'O'}, 'RU': {symbol: 'щ', alternate: 'Щ'}}},
+    {scale: '1', keycode: 'KeyP', content: {'EN': {symbol: 'p', alternate: 'P'}, 'RU': {symbol: 'з', alternate: 'З'}}},
+    {scale: '1', keycode: 'BracketLeft', content: {'EN': {symbol: '[', alternate: '['}, 'RU': {symbol: 'х', alternate: 'Х'}}},
+    {scale: '1', keycode: 'BracketRight', content: {'EN': {symbol: ']', alternate: ']'}, 'RU': {symbol: 'ъ', alternate: 'Ъ'}}},
+    {scale: '1', keycode: 'Backslash', content: {'EN': {symbol: '\\', alternate: '|'}, 'RU': {symbol: '\\', alternate: '/'}}},
   ], [
-    {scale: '1.8', keycode: 'CapsLock', content: {'EN': {symbol: 'CapsLock', symbolExt: 'CapsLock'}, 'RU': {symbol: 'CapsLock', symbolExt: 'CapsLock'}}},
-    {scale: '1', keycode: 'KeyA', content: {'EN': {symbol: 'a', symbolExt: 'A'}, 'RU': {symbol: 'ф', symbolExt: 'Ф'}}},
-    {scale: '1', keycode: 'KeyS', content: {'EN': {symbol: 's', symbolExt: 'S'}, 'RU': {symbol: 'ы', symbolExt: 'Ы'}}},
-    {scale: '1', keycode: 'KeyD', content: {'EN': {symbol: 'd', symbolExt: 'D'}, 'RU': {symbol: 'в', symbolExt: 'В'}}},
-    {scale: '1', keycode: 'KeyF', content: {'EN': {symbol: 'f', symbolExt: 'F'}, 'RU': {symbol: 'а', symbolExt: 'А'}}},
-    {scale: '1', keycode: 'KeyG', content: {'EN': {symbol: 'g', symbolExt: 'G'}, 'RU': {symbol: 'п', symbolExt: 'П'}}},
-    {scale: '1', keycode: 'KeyH', content: {'EN': {symbol: 'h', symbolExt: 'H'}, 'RU': {symbol: 'р', symbolExt: 'Р'}}},
-    {scale: '1', keycode: 'KeyJ', content: {'EN': {symbol: 'j', symbolExt: 'J'}, 'RU': {symbol: 'о', symbolExt: 'О'}}},
-    {scale: '1', keycode: 'KeyK', content: {'EN': {symbol: 'k', symbolExt: 'K'}, 'RU': {symbol: 'л', symbolExt: 'Л'}}},
-    {scale: '1', keycode: 'KeyL', content: {'EN': {symbol: 'l', symbolExt: 'L'}, 'RU': {symbol: 'д', symbolExt: 'Д'}}},
-    {scale: '1', keycode: 'Semicolon', content: {'EN': {symbol: ';', symbolExt: ':'}, 'RU': {symbol: 'ж', symbolExt: 'Ж'}}},
-    {scale: '1', keycode: 'Quote', content: {'EN': {symbol: '\'', symbolExt: '\"'}, 'RU': {symbol: 'э', symbolExt: 'Э'}}},
-    {scale: '2', keycode: 'Enter', content: {'EN': {symbol: 'Enter', symbolExt: 'Enter'}, 'RU': {symbol: 'Enter', symbolExt: 'Enter'}}},
+    {scale: '1.8', keycode: 'CapsLock', content: {'EN': {symbol: 'CapsLock', alternate: 'CapsLock'}, 'RU': {symbol: 'CapsLock', alternate: 'CapsLock'}}},
+    {scale: '1', keycode: 'KeyA', content: {'EN': {symbol: 'a', alternate: 'A'}, 'RU': {symbol: 'ф', alternate: 'Ф'}}},
+    {scale: '1', keycode: 'KeyS', content: {'EN': {symbol: 's', alternate: 'S'}, 'RU': {symbol: 'ы', alternate: 'Ы'}}},
+    {scale: '1', keycode: 'KeyD', content: {'EN': {symbol: 'd', alternate: 'D'}, 'RU': {symbol: 'в', alternate: 'В'}}},
+    {scale: '1', keycode: 'KeyF', content: {'EN': {symbol: 'f', alternate: 'F'}, 'RU': {symbol: 'а', alternate: 'А'}}},
+    {scale: '1', keycode: 'KeyG', content: {'EN': {symbol: 'g', alternate: 'G'}, 'RU': {symbol: 'п', alternate: 'П'}}},
+    {scale: '1', keycode: 'KeyH', content: {'EN': {symbol: 'h', alternate: 'H'}, 'RU': {symbol: 'р', alternate: 'Р'}}},
+    {scale: '1', keycode: 'KeyJ', content: {'EN': {symbol: 'j', alternate: 'J'}, 'RU': {symbol: 'о', alternate: 'О'}}},
+    {scale: '1', keycode: 'KeyK', content: {'EN': {symbol: 'k', alternate: 'K'}, 'RU': {symbol: 'л', alternate: 'Л'}}},
+    {scale: '1', keycode: 'KeyL', content: {'EN': {symbol: 'l', alternate: 'L'}, 'RU': {symbol: 'д', alternate: 'Д'}}},
+    {scale: '1', keycode: 'Semicolon', content: {'EN': {symbol: ';', alternate: ':'}, 'RU': {symbol: 'ж', alternate: 'Ж'}}},
+    {scale: '1', keycode: 'Quote', content: {'EN': {symbol: '\'', alternate: '\"'}, 'RU': {symbol: 'э', alternate: 'Э'}}},
+    {scale: '2', keycode: 'Enter', content: {'EN': {symbol: 'Enter', alternate: 'Enter'}, 'RU': {symbol: 'Enter', alternate: 'Enter'}}},
   ], [
-    {scale: '2', keycode: 'ShiftLeft', content: {'EN': {symbol: 'Shift', symbolExt: 'Shift'}, 'RU': {symbol: 'Shift', symbolExt: 'Shift'}}},
-    {scale: '1', keycode: 'KeyZ', content: {'EN': {symbol: 'z', symbolExt: 'Z'}, 'RU': {symbol: 'я', symbolExt: 'Я'}}},
-    {scale: '1', keycode: 'KeyX', content: {'EN': {symbol: 'x', symbolExt: 'X'}, 'RU': {symbol: 'ч', symbolExt: 'Ч'}}},
-    {scale: '1', keycode: 'KeyC', content: {'EN': {symbol: 'c', symbolExt: 'C'}, 'RU': {symbol: 'с', symbolExt: 'С'}}},
-    {scale: '1', keycode: 'KeyV', content: {'EN': {symbol: 'v', symbolExt: 'V'}, 'RU': {symbol: 'м', symbolExt: 'М'}}},
-    {scale: '1', keycode: 'KeyB', content: {'EN': {symbol: 'b', symbolExt: 'B'}, 'RU': {symbol: 'и', symbolExt: 'И'}}},
-    {scale: '1', keycode: 'KeyN', content: {'EN': {symbol: 'n', symbolExt: 'N'}, 'RU': {symbol: 'т', symbolExt: 'Т'}}},
-    {scale: '1', keycode: 'KeyM', content: {'EN': {symbol: 'm', symbolExt: 'M'}, 'RU': {symbol: 'ь', symbolExt: 'Ь'}}},
-    {scale: '1', keycode: 'Comma', content: {'EN': {symbol: ',', symbolExt: '<'}, 'RU': {symbol: 'б', symbolExt: 'Б'}}},
-    {scale: '1', keycode: 'Period', content: {'EN': {symbol: '.', symbolExt: '>'}, 'RU': {symbol: 'ю', symbolExt: 'Ю'}}},
-    {scale: '1', keycode: 'Slash', content: {'EN': {symbol: '/', symbolExt: '?'}, 'RU': {symbol: '.', symbolExt: ','}}},
-    {scale: '1', keycode: 'ArrowUp', content: {'EN': {symbol: 'Up', symbolExt: 'Up'}, 'RU': {symbol: 'Up', symbolExt: 'Up'}}},
-    {scale: '1', keycode: 'ShiftRight', content: {'EN': {symbol: 'Shift', symbolExt: 'Shift'}, 'RU': {symbol: 'Shift', symbolExt: 'Shift'}}},
+    {scale: '2', keycode: 'ShiftLeft', content: {'EN': {symbol: 'Shift', alternate: 'Shift'}, 'RU': {symbol: 'Shift', alternate: 'Shift'}}},
+    {scale: '1', keycode: 'KeyZ', content: {'EN': {symbol: 'z', alternate: 'Z'}, 'RU': {symbol: 'я', alternate: 'Я'}}},
+    {scale: '1', keycode: 'KeyX', content: {'EN': {symbol: 'x', alternate: 'X'}, 'RU': {symbol: 'ч', alternate: 'Ч'}}},
+    {scale: '1', keycode: 'KeyC', content: {'EN': {symbol: 'c', alternate: 'C'}, 'RU': {symbol: 'с', alternate: 'С'}}},
+    {scale: '1', keycode: 'KeyV', content: {'EN': {symbol: 'v', alternate: 'V'}, 'RU': {symbol: 'м', alternate: 'М'}}},
+    {scale: '1', keycode: 'KeyB', content: {'EN': {symbol: 'b', alternate: 'B'}, 'RU': {symbol: 'и', alternate: 'И'}}},
+    {scale: '1', keycode: 'KeyN', content: {'EN': {symbol: 'n', alternate: 'N'}, 'RU': {symbol: 'т', alternate: 'Т'}}},
+    {scale: '1', keycode: 'KeyM', content: {'EN': {symbol: 'm', alternate: 'M'}, 'RU': {symbol: 'ь', alternate: 'Ь'}}},
+    {scale: '1', keycode: 'Comma', content: {'EN': {symbol: ',', alternate: '<'}, 'RU': {symbol: 'б', alternate: 'Б'}}},
+    {scale: '1', keycode: 'Period', content: {'EN': {symbol: '.', alternate: '>'}, 'RU': {symbol: 'ю', alternate: 'Ю'}}},
+    {scale: '1', keycode: 'Slash', content: {'EN': {symbol: '/', alternate: '?'}, 'RU': {symbol: '.', alternate: ','}}},
+    {scale: '1', keycode: 'ArrowUp', content: {'EN': {symbol: 'Up', alternate: 'Up'}, 'RU': {symbol: 'Up', alternate: 'Up'}}},
+    {scale: '1', keycode: 'ShiftRight', content: {'EN': {symbol: 'Shift', alternate: 'Shift'}, 'RU': {symbol: 'Shift', alternate: 'Shift'}}},
   ], [
-    {scale: '1', keycode: 'ControlLeft', content: {'EN': {symbol: 'Ctrl', symbolExt: 'Ctrl'}, 'RU': {symbol: 'Ctrl', symbolExt: 'Ctrl'}}},
-    {scale: '1', keycode: 'MetaLeft', content: {'EN': {symbol: 'Win', symbolExt: 'Win'}, 'RU': {symbol: 'Win', symbolExt: 'Win'}}},
-    {scale: '1', keycode: 'AltLeft', content: {'EN': {symbol: 'Alt', symbolExt: 'Alt'}, 'RU': {symbol: 'Alt', symbolExt: 'Alt'}}},
-    {scale: '6.5', keycode: 'Space', content: {'EN': {symbol: ' ', symbolExt: ' '}, 'RU': {symbol: ' ', symbolExt: ' '}}},
-    {scale: '1', keycode: 'AltRight', content: {'EN': {symbol: 'Alt', symbolExt: 'Alt'}, 'RU': {symbol: 'Alt', symbolExt: 'Alt'}}},
-    {scale: '1', keycode: 'ControlRight', content: {'EN': {symbol: 'Ctrl', symbolExt: 'Ctrl'}, 'RU': {symbol: 'Ctrl', symbolExt: 'Ctrl'}}},
-    {scale: '1', keycode: 'ArrowLeft', content: {'EN': {symbol: 'Left', symbolExt: 'Left'}, 'RU': {symbol: 'Left', symbolExt: 'Left'}}},
-    {scale: '1', keycode: 'ArrowDown', content: {'EN': {symbol: 'Down', symbolExt: 'Down'}, 'RU': {symbol: 'Down', symbolExt: 'Down'}}},
-    {scale: '1', keycode: 'ArrowRight', content: {'EN': {symbol: 'Right', symbolExt: 'Right'}, 'RU': {symbol: 'Right', symbolExt: 'Right'}}},
+    {scale: '1', keycode: 'ControlLeft', content: {'EN': {symbol: 'Ctrl', alternate: 'Ctrl'}, 'RU': {symbol: 'Ctrl', alternate: 'Ctrl'}}},
+    {scale: '1', keycode: 'MetaLeft', content: {'EN': {symbol: 'Win', alternate: 'Win'}, 'RU': {symbol: 'Win', alternate: 'Win'}}},
+    {scale: '1', keycode: 'AltLeft', content: {'EN': {symbol: 'Alt', alternate: 'Alt'}, 'RU': {symbol: 'Alt', alternate: 'Alt'}}},
+    {scale: '6.5', keycode: 'Space', content: {'EN': {symbol: ' ', alternate: ' '}, 'RU': {symbol: ' ', alternate: ' '}}},
+    {scale: '1', keycode: 'AltRight', content: {'EN': {symbol: 'Alt', alternate: 'Alt'}, 'RU': {symbol: 'Alt', alternate: 'Alt'}}},
+    {scale: '1', keycode: 'ControlRight', content: {'EN': {symbol: 'Ctrl', alternate: 'Ctrl'}, 'RU': {symbol: 'Ctrl', alternate: 'Ctrl'}}},
+    {scale: '1', keycode: 'ArrowLeft', content: {'EN': {symbol: 'Left', alternate: 'Left'}, 'RU': {symbol: 'Left', alternate: 'Left'}}},
+    {scale: '1', keycode: 'ArrowDown', content: {'EN': {symbol: 'Down', alternate: 'Down'}, 'RU': {symbol: 'Down', alternate: 'Down'}}},
+    {scale: '1', keycode: 'ArrowRight', content: {'EN': {symbol: 'Right', alternate: 'Right'}, 'RU': {symbol: 'Right', alternate: 'Right'}}},
   ]
 ]
 
 const DEFAULT_LANGUAGE = 'EN';
 const ALTERNATE_LANGUAGE = 'RU';
 
-let alternateSymbol = false;
+let isAlternateEnabled = false;
 let keyboardConfigFlat = keyboardConfig.flat(Infinity);
 
 window.addEventListener('load', drawElements, false);
@@ -102,7 +102,7 @@ function onKeyDown(event){
 
     case 'CapsLock':
       if(!event.repeat) {
-        alternateSymbol = !alternateSymbol;
+        isAlternateEnabled = !isAlternateEnabled;
         updateKeyboard();
       }
       break;
@@ -141,7 +141,8 @@ function onKeyDown(event){
       break;
     
     default:
-      currentSymbol = getButtonSymbol(event.code, currentLanguage, alternateSymbol != event.shiftKey );
+      let buttonSymbol = getButtonSymbol(event.code, currentLanguage);
+      currentSymbol = (isAlternateEnabled == event.shiftKey) ? buttonSymbol['symbol'] : buttonSymbol['alternate'];
       break;
   }
 
@@ -154,9 +155,18 @@ function updateKeyboard(){
   let currentLanguage = getCookie('currentLanguage');
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
-    let newSymbol = getButtonSymbol(element.id, currentLanguage, alternateSymbol);
-    if(newSymbol!==undefined){
-      element.innerText = newSymbol;
+    let symbol = document.getElementById(element.id+'_symbol');
+    let alternate = document.getElementById(element.id+'_alternate');
+    let buttonSymbol = getButtonSymbol(element.id, currentLanguage);
+    if(buttonSymbol!==undefined){
+      let {symbol: sText, alternate: aText} = buttonSymbol;
+      if (isAlternateEnabled) {
+        [sText,aText] = [sText,aText].reverse();
+      }
+      if(sText==aText) {
+        aText = '';
+      }
+      [symbol.innerText,alternate.innerText] = [sText,aText];
     }
   });
 }
@@ -217,7 +227,16 @@ function onKeyUp(event) {
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
     if(element.id==event.code){
-      element.style.cssText += "background-color: lightblue;"
+      switch (event.code){
+        case 'CapsLock':
+          if(!isAlternateEnabled){
+            element.style.cssText += "background-color: lightblue;"
+          }
+          break;
+        default:
+          element.style.cssText += "background-color: lightblue;"
+          break;
+      }
     }
   });
 
@@ -228,21 +247,24 @@ function onKeyUp(event) {
     let shiftRight = document.getElementById("ShiftRight");
     shiftRight.style.cssText += "background-color: lightblue;"
   }
+
 }
 
-function getButtonSymbol(keycode, language='EN', alternate=false){
+function getButtonSymbol(keycode, language=DEFAULT_LANGUAGE){
   let keyConfig = keyboardConfigFlat.find( (item) => item['keycode'] == keycode );
   if(keyConfig===undefined) {
     return;
   }
-  if(!alternate) {
-    return keyConfig['content'][language]['symbol'];
-  } else {
-    return keyConfig['content'][language]['symbolExt'];
-  }
+  return keyConfig['content'][language];
 }
 
 function drawElements() {
+  let currentLanguage = getCookie('currentLanguage');
+  if(currentLanguage===undefined){
+    setCookie('currentLanguage',DEFAULT_LANGUAGE);
+    currentLanguage = DEFAULT_LANGUAGE;
+  }
+
   let textEditorWrapper = document.createElement("div");
   let textEditor = document.createElement("textarea");
   textEditor.classList.add("textInput");
@@ -264,24 +286,28 @@ function drawElements() {
       let key = document.createElement("div");
       key.id = keyConfig['keycode'];
       key.classList.add("keyboard--button");
-
-      let currentLanguage = getCookie('currentLanguage');
-      if(currentLanguage===undefined){
-        setCookie('currentLanguage',DEFAULT_LANGUAGE);
-        currentLanguage = DEFAULT_LANGUAGE;
-      }
-
-      key.innerText = keyConfig['content'][currentLanguage]['symbol'];
       key.style.cssText += "height:60px; background-color: lightblue;" 
       let keyWidth = 80*Number(keyConfig['scale']);
       if(keyWidth !== undefined){
         key.style.cssText += "width: " + keyWidth + "px;"
       }
+
+      let keySymbol = document.createElement("p");
+      keySymbol.id = key.id + '_symbol';
+      keySymbol.classList.add("keyboard--button-symbol");
+
+      let keyAlternate = document.createElement("p");
+      keyAlternate.id = key.id + '_alternate';
+      keyAlternate.classList.add("keyboard--button-alternate");
+
+      key.append(keySymbol);
+      key.append(keyAlternate);
       keyString.append(key);
     }
     keyboardWrapper.append(keyString);
   }
   document.body.append(keyboardWrapper);
+  updateKeyboard();
 }
 
 // get cookie with given name
