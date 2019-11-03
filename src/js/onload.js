@@ -217,6 +217,14 @@ function onKeyUp(event) {
       element.style.cssText += "background-color: lightblue;"
     }
   });
+
+  //fix: when two Shift button pressed, only one keyUp event will be raised
+  if( (event.code == 'ShiftLeft' || event.code == 'ShiftRight') && !event.shiftKey ){
+    let shiftLeft = document.getElementById("ShiftLeft");
+    shiftLeft.style.cssText += "background-color: lightblue;"
+    let shiftRight = document.getElementById("ShiftRight");
+    shiftRight.style.cssText += "background-color: lightblue;"
+  }
 }
 
 function getButtonSymbol(keycode, language='EN', alternate=false){
