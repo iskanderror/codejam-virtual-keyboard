@@ -85,10 +85,10 @@ function onKeyDown(event){
   let textEditor = document.getElementById("textEditor");
   textEditor.focus();
 
-  let keyboard = document.querySelectorAll(".keyboard--button");
+  let keyboard = document.querySelectorAll(".keyboard_button");
   keyboard.forEach( function(element){
     if(element.id==event.code){
-      element.style.cssText += "background-color: blueviolet;";
+      element.classList.toggle('keyboard_button-pressed',true);
     }
   });
 
@@ -151,9 +151,33 @@ function onKeyDown(event){
   }
 }
 
+function onKeyUp(event) {
+  event.preventDefault();
+  let keyboard = document.querySelectorAll(".keyboard_button");
+  keyboard.forEach( function(element){
+    if(element.id==event.code){
+      switch (event.code){
+        case 'CapsLock':
+          element.classList.toggle('keyboard_button-pressed',isAlternateEnabled);
+          break;
+        default:
+          element.classList.toggle('keyboard_button-pressed',false);
+          break;
+      }
+    }
+  });
+  //fix: when two Shift button pressed, only one keyUp event will be raised
+  if( (event.code == 'ShiftLeft' || event.code == 'ShiftRight') && !event.shiftKey ){
+    let shiftLeft = document.getElementById("ShiftLeft");
+    shiftLeft.classList.toggle('keyboard_button-pressed',false);
+    let shiftRight = document.getElementById("ShiftRight");
+    shiftRight.classList.toggle('keyboard_button-pressed',false);
+  }
+}
+
 function updateKeyboard(){
   let currentLanguage = getCookie('currentLanguage');
-  let keyboard = document.querySelectorAll(".keyboard--button");
+  let keyboard = document.querySelectorAll(".keyboard_button");
   keyboard.forEach( function(element){
     let symbol = document.getElementById(element.id+'_symbol');
     let alternate = document.getElementById(element.id+'_alternate');
@@ -222,34 +246,6 @@ function moveCursorRight(textArea, select=false){
   textArea.setSelectionRange(p_start,p_end);
 }
 
-function onKeyUp(event) {
-  event.preventDefault();
-  let keyboard = document.querySelectorAll(".keyboard--button");
-  keyboard.forEach( function(element){
-    if(element.id==event.code){
-      switch (event.code){
-        case 'CapsLock':
-          if(!isAlternateEnabled){
-            element.style.cssText += "background-color: lightblue;"
-          }
-          break;
-        default:
-          element.style.cssText += "background-color: lightblue;"
-          break;
-      }
-    }
-  });
-
-  //fix: when two Shift button pressed, only one keyUp event will be raised
-  if( (event.code == 'ShiftLeft' || event.code == 'ShiftRight') && !event.shiftKey ){
-    let shiftLeft = document.getElementById("ShiftLeft");
-    shiftLeft.style.cssText += "background-color: lightblue;"
-    let shiftRight = document.getElementById("ShiftRight");
-    shiftRight.style.cssText += "background-color: lightblue;"
-  }
-
-}
-
 function getButtonSymbol(keycode, language=DEFAULT_LANGUAGE){
   let keyConfig = keyboardConfigFlat.find( (item) => item['keycode'] == keycode );
   if(keyConfig===undefined) {
@@ -279,14 +275,13 @@ function drawElements() {
   for (let i=0; i<keyboardConfig.length;i++) {
     let keyStringConfig = keyboardConfig[i];
     let keyString = document.createElement("div");
-    keyString.classList.add("keyboard--keystring");
+    keyString.classList.add("keyboard_keystring");
     for (let j=0; j<keyStringConfig.length;j++){
       let keyConfig = keyStringConfig[j];
       
       let key = document.createElement("div");
       key.id = keyConfig['keycode'];
-      key.classList.add("keyboard--button");
-      key.style.cssText += "height:60px; background-color: lightblue;" 
+      key.classList.add("keyboard_button");
       let keyWidth = 80*Number(keyConfig['scale']);
       if(keyWidth !== undefined){
         key.style.cssText += "width: " + keyWidth + "px;"
@@ -294,11 +289,11 @@ function drawElements() {
 
       let keySymbol = document.createElement("p");
       keySymbol.id = key.id + '_symbol';
-      keySymbol.classList.add("keyboard--button-symbol");
+      keySymbol.classList.add("keyboard_button--symbol");
 
       let keyAlternate = document.createElement("p");
       keyAlternate.id = key.id + '_alternate';
-      keyAlternate.classList.add("keyboard--button-alternate");
+      keyAlternate.classList.add("keyboard_button--alternate");
 
       key.append(keySymbol);
       key.append(keyAlternate);

@@ -3,34 +3,43 @@
   margin: 20px auto 0;
   font-size: 24px;
   background-color: grey;
+}
 
-  &--keystring{
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;  
+.keyboard_keystring{
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;  
+}
+
+.keyboard_button {
+  position: relative;
+  height:60px;
+  margin: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  background-color: lightblue;
+
+  &:hover {
+    background-color: lightsteelblue;
   }
 
-  &--button {
-    position: relative;
-    margin: 5px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-  
-    &-symbol {
-      margin: 0;
-    }
-
-    &-alternate {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      margin: 0;
-      font-size: 18px;
-      color: grey;
-      background-color: transparent;
-    }
+  &-pressed {
+    background-color: blueviolet;
   }
 
+  &--symbol {
+    margin: 0;
+  }
+
+  &--alternate {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    margin: 0;
+    font-size: 18px;
+    color: grey;
+    background-color: transparent;
+  }
 }
