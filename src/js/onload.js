@@ -70,8 +70,10 @@ const keyboardConfig = [
   ]
 ]
 
+const DEFAULT_LANGUAGE = 'EN';
+const ALTERNATE_LANGUAGE = 'RU';
+
 let alternateSymbol = false;
-let currentLanguage = 'EN';
 let keyboardConfigFlat = keyboardConfig.flat(Infinity);
 
 window.addEventListener('load', drawElements, false);
@@ -91,6 +93,7 @@ function onKeyDown(event){
   });
 
   let currentSymbol;
+  let currentLanguage = getCookie('currentLanguage');
   switch (event.code){
     case 'ShiftLeft':
     case 'ShiftRight':
@@ -108,20 +111,19 @@ function onKeyDown(event){
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
-      if (currentLanguage == 'RU') {
-        currentLanguage = 'EN';
-      } else {
-        currentLanguage = 'RU';
-      }
+      let newLanguage = (currentLanguage == DEFAULT_LANGUAGE) ? ALTERNATE_LANGUAGE : DEFAULT_LANGUAGE;
+      setCookie('currentLanguage',newLanguage);
       updateKeyboard();
       break;
 
     case 'ArrowLeft':
       moveCursorLeft(textEditor, event.shiftKey);
       break;
+
     case 'ArrowRight':
       moveCursorRight(textEditor, event.shiftKey);
       break;
+
     case 'ArrowUp':
     case 'ArrowDown':
       break;
@@ -149,6 +151,7 @@ function onKeyDown(event){
 }
 
 function updateKeyboard(){
+  let currentLanguage = getCookie('currentLanguage');
   let keyboard = document.querySelectorAll(".keyboard--button");
   keyboard.forEach( function(element){
     let newSymbol = getButtonSymbol(element.id, currentLanguage, alternateSymbol);
@@ -261,7 +264,14 @@ function drawElements() {
       let key = document.createElement("div");
       key.id = keyConfig['keycode'];
       key.classList.add("keyboard--button");
-      key.innerText = keyConfig['content']['EN']['symbol'];
+
+      let currentLanguage = getCookie('currentLanguage');
+      if(currentLanguage===undefined){
+        setCookie('currentLanguage',DEFAULT_LANGUAGE);
+        currentLanguage = DEFAULT_LANGUAGE;
+      }
+
+      key.innerText = keyConfig['content'][currentLanguage]['symbol'];
       key.style.cssText += "height:60px; background-color: lightblue;" 
       let keyWidth = 80*Number(keyConfig['scale']);
       if(keyWidth !== undefined){
@@ -272,4 +282,34 @@ function drawElements() {
     keyboardWrapper.append(keyString);
   }
   document.body.append(keyboardWrapper);
+}
+
+// get cookie with given name
+// or undefined if found nothing
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(name, value, options = {}) {
+  options = {
+    path: '/',
+    ...options
+  };
+
+  if (options.expires!==undefined && options.expires.toUTCString) {
+    options.expires = options.expires.toUTCString();
+  }
+
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+  document.cookie = updatedCookie;
 }
