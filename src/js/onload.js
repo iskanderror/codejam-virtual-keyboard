@@ -69,41 +69,56 @@ const keyboardConfig = [
     {scale: '1', keycode: 'ArrowRight', content: {'EN': {symbol: 'Right', alternate: 'Right'}, 'RU': {symbol: 'Right', alternate: 'Right'}}},
   ]
 ]
+const keyboardConfigFlat = keyboardConfig.flat(Infinity);
 
 const DEFAULT_LANGUAGE = 'EN';
 const ALTERNATE_LANGUAGE = 'RU';
 
-let isAlternateEnabled = false;
-let keyboardConfigFlat = keyboardConfig.flat(Infinity);
+let keyboardUpdateEvent = document.createEvent('Event');
+keyboardUpdateEvent.initEvent('keyboardUpdate',true,true);
 
-window.addEventListener('load', drawElements, false);
-document.addEventListener('keydown', onKeyDown);
-document.addEventListener('keyup', onKeyUp);
+window.addEventListener('load', onLoad, false);
+
+function onLoad(){
+  initCookies();
+  drawElements();
+
+  document.addEventListener('keyboardUpdate',updateKeyboard,false);
+  document.dispatchEvent(keyboardUpdateEvent);
+
+  document.addEventListener('keydown', onKeyDown, false);
+  document.addEventListener('keyup', onKeyUp, false);
+}
+
+function onKeyUp(event) {
+  event.preventDefault();
+  setColorReleased(event.code,event.shiftKey);
+}
 
 function onKeyDown(event){
   event.preventDefault();
+  setColorPressed(event.code);
+
   let textEditor = document.getElementById("textEditor");
   textEditor.focus();
+  editText(textEditor, event.code, event.shiftKey, event.repeat);
+}
 
-  let keyboard = document.querySelectorAll(".keyboard_button");
-  keyboard.forEach( function(element){
-    if(element.id==event.code){
-      element.classList.toggle('keyboard_button-pressed',true);
-    }
-  });
-
+function editText(textEditor, code, shiftKey = false, repeat=false){
   let currentSymbol;
   let currentLanguage = getCookie('currentLanguage');
-  switch (event.code){
+  let isAlternate = (getCookie('isAlternate') == 'true');
+  switch (code){
     case 'ShiftLeft':
     case 'ShiftRight':
     case 'MetaLeft':
       break;
 
     case 'CapsLock':
-      if(!event.repeat) {
-        isAlternateEnabled = !isAlternateEnabled;
-        updateKeyboard();
+      if(!repeat) {
+        isAlternate = !isAlternate;
+        setCookie('isAlternate', isAlternate);
+        document.dispatchEvent(keyboardUpdateEvent);
       }
       break;
 
@@ -113,15 +128,15 @@ function onKeyDown(event){
     case 'AltRight':
       let newLanguage = (currentLanguage == DEFAULT_LANGUAGE) ? ALTERNATE_LANGUAGE : DEFAULT_LANGUAGE;
       setCookie('currentLanguage',newLanguage);
-      updateKeyboard();
+      document.dispatchEvent(keyboardUpdateEvent);
       break;
 
     case 'ArrowLeft':
-      moveCursorLeft(textEditor, event.shiftKey);
+      moveCursorLeft(textEditor, shiftKey);
       break;
 
     case 'ArrowRight':
-      moveCursorRight(textEditor, event.shiftKey);
+      moveCursorRight(textEditor, shiftKey);
       break;
 
     case 'ArrowUp':
@@ -141,8 +156,10 @@ function onKeyDown(event){
       break;
     
     default:
-      let buttonSymbol = getButtonSymbol(event.code, currentLanguage);
-      currentSymbol = (isAlternateEnabled == event.shiftKey) ? buttonSymbol['symbol'] : buttonSymbol['alternate'];
+      let buttonSymbol = getButtonSymbol(code, currentLanguage);
+      if (buttonSymbol !== undefined) {
+        currentSymbol = (isAlternate == shiftKey) ? buttonSymbol['symbol'] : buttonSymbol['alternate'];
+      }
       break;
   }
 
@@ -151,14 +168,23 @@ function onKeyDown(event){
   }
 }
 
-function onKeyUp(event) {
-  event.preventDefault();
+function setColorPressed (code){
   let keyboard = document.querySelectorAll(".keyboard_button");
   keyboard.forEach( function(element){
-    if(element.id==event.code){
-      switch (event.code){
+    if(element.id==code){
+      element.classList.toggle('keyboard_button-pressed',true);
+    }
+  });
+}
+
+function setColorReleased(code, shiftKey=false){
+  let isAlternate = (getCookie('isAlternate') == 'true');
+  let keyboard = document.querySelectorAll(".keyboard_button");
+  keyboard.forEach( function(element){
+    if(element.id==code){
+      switch (code){
         case 'CapsLock':
-          element.classList.toggle('keyboard_button-pressed',isAlternateEnabled);
+          element.classList.toggle('keyboard_button-pressed',isAlternate);
           break;
         default:
           element.classList.toggle('keyboard_button-pressed',false);
@@ -167,7 +193,7 @@ function onKeyUp(event) {
     }
   });
   //fix: when two Shift button pressed, only one keyUp event will be raised
-  if( (event.code == 'ShiftLeft' || event.code == 'ShiftRight') && !event.shiftKey ){
+  if( (code == 'ShiftLeft' || code == 'ShiftRight') && !shiftKey ){
     let shiftLeft = document.getElementById("ShiftLeft");
     shiftLeft.classList.toggle('keyboard_button-pressed',false);
     let shiftRight = document.getElementById("ShiftRight");
@@ -177,6 +203,7 @@ function onKeyUp(event) {
 
 function updateKeyboard(){
   let currentLanguage = getCookie('currentLanguage');
+  let isAlternate = (getCookie('isAlternate') == 'true');
   let keyboard = document.querySelectorAll(".keyboard_button");
   keyboard.forEach( function(element){
     let symbol = document.getElementById(element.id+'_symbol');
@@ -184,7 +211,7 @@ function updateKeyboard(){
     let buttonSymbol = getButtonSymbol(element.id, currentLanguage);
     if(buttonSymbol!==undefined){
       let {symbol: sText, alternate: aText} = buttonSymbol;
-      if (isAlternateEnabled) {
+      if (isAlternate) {
         [sText,aText] = [sText,aText].reverse();
       }
       if(sText==aText) {
@@ -255,12 +282,6 @@ function getButtonSymbol(keycode, language=DEFAULT_LANGUAGE){
 }
 
 function drawElements() {
-  let currentLanguage = getCookie('currentLanguage');
-  if(currentLanguage===undefined){
-    setCookie('currentLanguage',DEFAULT_LANGUAGE);
-    currentLanguage = DEFAULT_LANGUAGE;
-  }
-
   let textEditorWrapper = document.createElement("div");
   let textEditor = document.createElement("textarea");
   textEditor.classList.add("textInput");
@@ -302,7 +323,18 @@ function drawElements() {
     keyboardWrapper.append(keyString);
   }
   document.body.append(keyboardWrapper);
-  updateKeyboard();
+}
+
+function initCookies(){
+  let currentLanguage = getCookie('currentLanguage');
+  if(currentLanguage===undefined){
+    setCookie('currentLanguage',DEFAULT_LANGUAGE);
+  }
+
+  let isAlternate = getCookie('isAlternate');
+  if(isAlternate===undefined){
+    setCookie('isAlternate',false);
+  }
 }
 
 // get cookie with given name
