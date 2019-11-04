@@ -1,0 +1,21 @@
+//color scheme
+$backgroundColor: lightgrey;
+$additionalBackgroundColor: darken($backgroundColor,15);
+$textColor: black;
+$additionalTextColor: grey;
+$keyProjectColor: lightblue;
+$keyHoverColor: darken($keyProjectColor,5%);
+$additionalProjectColor: complement($keyProjectColor);
+$additionalHoverColor: darken($additionalProjectColor,5%);
+
+
+@keyframes press {
+  0% { 
+    background-color: $keyProjectColor;
+    border-radius: 0;
+  }
+  100% { 
+    background-color: $additionalProjectColor;
+    border-radius: 20px;
+  }
+}
