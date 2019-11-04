@@ -2,7 +2,7 @@
   max-width: 1200px;
   margin: 20px auto 0;
   font-size: 24px;
-  background-color: grey;
+  background-color: $additionalBackgroundColor;
 }
 
 .keyboard_keystring{
@@ -19,14 +19,21 @@
   align-items: center;
   justify-content: center;
   user-select: none;
-  background-color: lightblue;
+  color: $textColor;
+  background-color: $keyProjectColor;
+
 
   &:hover {
-    background-color: lightsteelblue;
+    background-color: $keyHoverColor;
   }
 
   &-pressed {
-    background-color: blueviolet;
+    animation: press 0.25s;
+    background-color: $additionalProjectColor;
+
+    &:hover {
+      background-color: $additionalHoverColor;
+    }
   }
 
   &--symbol {
@@ -39,7 +46,7 @@
     right: 5px;
     margin: 0;
     font-size: 18px;
-    color: grey;
+    color: $additionalTextColor;
     background-color: transparent;
   }
 }

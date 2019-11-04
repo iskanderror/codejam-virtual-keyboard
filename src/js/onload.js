@@ -104,6 +104,21 @@ function onKeyDown(event){
   editText(textEditor, event.code, event.shiftKey, event.repeat);
 }
 
+function onButtonClick()
+{
+  let code = this.id;
+
+  setColorPressed(code);
+  let textEditor = document.getElementById("textEditor");
+  textEditor.focus();
+  editText(textEditor, code);
+  
+  setTimeout(function(){
+    setColorReleased(code);
+  }, 250);
+  
+}
+
 function editText(textEditor, code, shiftKey = false, repeat=false){
   let currentSymbol;
   let currentLanguage = getCookie('currentLanguage');
@@ -307,6 +322,7 @@ function drawElements() {
       if(keyWidth !== undefined){
         key.style.cssText += "width: " + keyWidth + "px;"
       }
+      key.addEventListener('click',onButtonClick,false);
 
       let keySymbol = document.createElement("p");
       keySymbol.id = key.id + '_symbol';
