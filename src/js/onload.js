@@ -1,4 +1,4 @@
-const keyboardConfig = [
+const KEYBOARD_CONFIG = [
   [
     { scale: '1', keycode: 'Backquote', content: { EN: { symbol: '`', alternate: '~' }, RU: { symbol: 'ё', alternate: 'Ё' } } },
     { scale: '1', keycode: 'Digit1', content: { EN: { symbol: '1', alternate: '!' }, RU: { symbol: '1', alternate: '!' } } },
@@ -69,8 +69,7 @@ const keyboardConfig = [
     { scale: '1', keycode: 'ArrowRight', content: { EN: { symbol: 'Right', alternate: 'Right' }, RU: { symbol: 'Right', alternate: 'Right' } } },
   ],
 ];
-const keyboardConfigFlat = keyboardConfig.flat(Infinity);
-
+const KEYBOARD_CONFIG_FLAT = KEYBOARD_CONFIG.flat(Infinity);
 const DEFAULT_LANGUAGE = 'EN';
 const ALTERNATE_LANGUAGE = 'RU';
 const DEFAULT_OPTIONS = {
@@ -79,11 +78,19 @@ const DEFAULT_OPTIONS = {
   isShiftKey: false,
 };
 
+
+// ---------------------------------------------------------------------------------------
+// custom events
+
 const keyboardUpdateEvent = document.createEvent('Event');
 keyboardUpdateEvent.initEvent('keyboardUpdate', true, true);
 
+// end of custom events
+// ---------------------------------------------------------------------------------------
+
 // ---------------------------------------------------------------------------------------
 // options functions
+
 function getOptions() {
   const options = JSON.parse(sessionStorage.getItem('options'));
   if (options !== null) {
@@ -99,6 +106,43 @@ function setOptions(options = {}) {
 }
 
 // end of options functions
+// ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// hotkeys section
+const HOTKEYS = [
+  { set: ['ShiftLeft', 'AltLeft'], function: 'changeLanguage' },
+];
+const currentCombination = [];
+
+function changeLanguage() {
+  let { currentLanguage } = getOptions();
+  if (currentLanguage === DEFAULT_LANGUAGE) {
+    currentLanguage = ALTERNATE_LANGUAGE;
+  } else {
+    currentLanguage = DEFAULT_LANGUAGE;
+  }
+  setOptions({ currentLanguage });
+  document.dispatchEvent(keyboardUpdateEvent);
+}
+
+function checkCombination(item) {
+  const keySet = item.set;
+  const combination = currentCombination.filter((key) => keySet.includes(key));
+  if (combination.length === keySet.length) {
+    const func = item.function;
+    eval(func)();
+    currentCombination.length = 0;
+  }
+}
+
+function handleHotkeys() {
+  HOTKEYS.forEach((item) => {
+    checkCombination(item);
+  });
+}
+
+// end of hotkeys section
 // ---------------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------------------
@@ -138,7 +182,7 @@ function setColorReleased(code) {
 }
 
 function getButtonSymbol(keycode, language = DEFAULT_LANGUAGE) {
-  const keyConfig = keyboardConfigFlat.find((item) => item.keycode === keycode);
+  const keyConfig = KEYBOARD_CONFIG_FLAT.find((item) => item.keycode === keycode);
   if (keyConfig === undefined) {
     return null;
   }
@@ -216,17 +260,32 @@ function moveCursorRight(textArea, select = false) {
   textArea.setSelectionRange(pStart, pEnd);
 }
 
-function handleButtonPressed(textEditor, code, parameters = {}) {
+function handleButtonPressed(textEditor, parameters = {}) {
   let currentSymbol;
   let buttonSymbol;
-  const { repeat = false } = parameters;
+  const {
+    repeat = false,
+    code = '',
+    ctrlKey = false,
+    altKey = false,
+  } = parameters;
+
   let { isAlternate, currentLanguage, isShiftKey } = getOptions();
+
+  if ((ctrlKey || altKey) && !repeat) {
+    if (!currentCombination.includes(code)) {
+      currentCombination.push(code);
+    }
+    handleHotkeys();
+    return;
+  }
+
   switch (code) {
     case 'ShiftLeft':
     case 'ShiftRight':
       if (!repeat) {
         isShiftKey = true;
-        setOptions({ isShiftKey });
+        setOptions({ 'isShiftKey' : true });
       }
       break;
     case 'MetaLeft':
@@ -244,13 +303,9 @@ function handleButtonPressed(textEditor, code, parameters = {}) {
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
-      if (currentLanguage === DEFAULT_LANGUAGE) {
-        currentLanguage = ALTERNATE_LANGUAGE;
-      } else {
-        currentLanguage = DEFAULT_LANGUAGE;
+      if (!repeat) {
+        changeLanguage();
       }
-      setOptions({ currentLanguage });
-      document.dispatchEvent(keyboardUpdateEvent);
       break;
 
     case 'ArrowLeft':
@@ -293,8 +348,14 @@ function handleButtonPressed(textEditor, code, parameters = {}) {
   }
 }
 
-function handleButtonReleased(code, parameters = {}) {
-  const { shiftKey = false } = parameters;
+function handleButtonReleased(parameters = {}) {
+  const {
+    code = '',
+    shiftKey = false,
+    ctrlKey = false,
+    altKey = false,
+  } = parameters;
+
   let { isShiftKey } = getOptions();
   switch (code) {
     case 'ShiftLeft':
@@ -304,6 +365,10 @@ function handleButtonReleased(code, parameters = {}) {
       break;
     default:
       break;
+  }
+
+  if (!ctrlKey && !altKey) {
+    currentCombination.length = 0;
   }
 }
 
@@ -315,8 +380,7 @@ function handleButtonReleased(code, parameters = {}) {
 
 function onKeyUp(event) {
   event.preventDefault();
-  const parameters = { shiftKey: event.shiftKey };
-  handleButtonReleased(event.code, parameters);
+  handleButtonReleased(event);
   setColorReleased(event.code);
 }
 
@@ -326,8 +390,7 @@ function onKeyDown(event) {
 
   const textEditor = document.getElementById('textEditor');
   textEditor.focus();
-  const parameters = { repeat: event.repeat };
-  handleButtonPressed(textEditor, event.code, parameters);
+  handleButtonPressed(textEditor, event);
 }
 
 // end of keyboard event handler functions
@@ -342,7 +405,10 @@ function onButtonClick() {
   setColorPressed(code);
   const textEditor = document.getElementById('textEditor');
   textEditor.focus();
-  handleButtonPressed(textEditor, code);
+  const parameters = { code };
+  handleButtonPressed(textEditor, parameters);
+
+  // handleHotkeys();
 
   setTimeout(() => {
     setColorReleased(code);
@@ -367,8 +433,8 @@ function drawElements() {
 
   const keyboardWrapper = document.createElement('div');
   keyboardWrapper.classList.add('keyboard');
-  for (let i = 0; i < keyboardConfig.length; i += 1) {
-    const keyStringConfig = keyboardConfig[i];
+  for (let i = 0; i < KEYBOARD_CONFIG.length; i += 1) {
+    const keyStringConfig = KEYBOARD_CONFIG[i];
     const keyString = document.createElement('div');
     keyString.classList.add('keyboard_keystring');
     for (let j = 0; j < keyStringConfig.length; j += 1) {
