@@ -1,4 +1,3 @@
-import './onload.js';
+import './onload';
 
-import "../scss/main.scss";
-
+import '../scss/main.scss';
