@@ -73,6 +73,7 @@ const keyboardConfigFlat = keyboardConfig.flat(Infinity);
 
 const DEFAULT_LANGUAGE = 'EN';
 const ALTERNATE_LANGUAGE = 'RU';
+const DEFAULT_OPTIONS = {'currentLanguage': DEFAULT_LANGUAGE, 'isAlternate':false, 'isShiftKey': false};
 
 let keyboardUpdateEvent = document.createEvent('Event');
 keyboardUpdateEvent.initEvent('keyboardUpdate',true,true);
@@ -80,7 +81,7 @@ keyboardUpdateEvent.initEvent('keyboardUpdate',true,true);
 window.addEventListener('load', onLoad, false);
 
 function onLoad(){
-  initCookies();
+  setOptions();
   drawElements();
 
   document.addEventListener('keyboardUpdate',updateKeyboard,false);
@@ -92,7 +93,9 @@ function onLoad(){
 
 function onKeyUp(event) {
   event.preventDefault();
-  setColorReleased(event.code,event.shiftKey);
+  let parameters = {'shiftKey': event.shiftKey};
+  handleButtonReleased(event.code,parameters);
+  setColorReleased(event.code);
 }
 
 function onKeyDown(event){
@@ -101,7 +104,8 @@ function onKeyDown(event){
 
   let textEditor = document.getElementById("textEditor");
   textEditor.focus();
-  editText(textEditor, event.code, event.shiftKey, event.repeat);
+  let parameters = {'repeat': event.repeat};
+  handleButtonPressed(textEditor, event.code, parameters);
 }
 
 function onButtonClick()
@@ -111,7 +115,7 @@ function onButtonClick()
   setColorPressed(code);
   let textEditor = document.getElementById("textEditor");
   textEditor.focus();
-  editText(textEditor, code);
+  handleButtonPressed(textEditor, code);
   
   setTimeout(function(){
     setColorReleased(code);
@@ -119,20 +123,27 @@ function onButtonClick()
   
 }
 
-function editText(textEditor, code, shiftKey = false, repeat=false){
+// ---------------------------------------------------------------------------------------
+// text functions
+function handleButtonPressed(textEditor, code, parameters={}){
   let currentSymbol;
-  let currentLanguage = getCookie('currentLanguage');
-  let isAlternate = (getCookie('isAlternate') == 'true');
+  let {repeat=false} = parameters;
+  let {isAlternate, currentLanguage, isShiftKey} = getOptions();
   switch (code){
     case 'ShiftLeft':
     case 'ShiftRight':
+      if(!repeat) {
+        isShiftKey = true;
+        setOptions({isShiftKey});
+      }
+      break;
     case 'MetaLeft':
       break;
 
     case 'CapsLock':
       if(!repeat) {
         isAlternate = !isAlternate;
-        setCookie('isAlternate', isAlternate);
+        setOptions({isAlternate});
         document.dispatchEvent(keyboardUpdateEvent);
       }
       break;
@@ -141,17 +152,17 @@ function editText(textEditor, code, shiftKey = false, repeat=false){
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
-      let newLanguage = (currentLanguage == DEFAULT_LANGUAGE) ? ALTERNATE_LANGUAGE : DEFAULT_LANGUAGE;
-      setCookie('currentLanguage',newLanguage);
+      currentLanguage = (currentLanguage == DEFAULT_LANGUAGE) ? ALTERNATE_LANGUAGE : DEFAULT_LANGUAGE;
+      setOptions({currentLanguage});
       document.dispatchEvent(keyboardUpdateEvent);
       break;
 
     case 'ArrowLeft':
-      moveCursorLeft(textEditor, shiftKey);
+      moveCursorLeft(textEditor, isShiftKey);
       break;
 
     case 'ArrowRight':
-      moveCursorRight(textEditor, shiftKey);
+      moveCursorRight(textEditor, isShiftKey);
       break;
 
     case 'ArrowUp':
@@ -173,7 +184,7 @@ function editText(textEditor, code, shiftKey = false, repeat=false){
     default:
       let buttonSymbol = getButtonSymbol(code, currentLanguage);
       if (buttonSymbol !== undefined) {
-        currentSymbol = (isAlternate == shiftKey) ? buttonSymbol['symbol'] : buttonSymbol['alternate'];
+        currentSymbol = (isAlternate == isShiftKey) ? buttonSymbol['symbol'] : buttonSymbol['alternate'];
       }
       break;
   }
@@ -183,59 +194,18 @@ function editText(textEditor, code, shiftKey = false, repeat=false){
   }
 }
 
-function setColorPressed (code){
-  let keyboard = document.querySelectorAll(".keyboard_button");
-  keyboard.forEach( function(element){
-    if(element.id==code){
-      element.classList.toggle('keyboard_button-pressed',true);
-    }
-  });
-}
-
-function setColorReleased(code, shiftKey=false){
-  let isAlternate = (getCookie('isAlternate') == 'true');
-  let keyboard = document.querySelectorAll(".keyboard_button");
-  keyboard.forEach( function(element){
-    if(element.id==code){
-      switch (code){
-        case 'CapsLock':
-          element.classList.toggle('keyboard_button-pressed',isAlternate);
-          break;
-        default:
-          element.classList.toggle('keyboard_button-pressed',false);
-          break;
-      }
-    }
-  });
-  //fix: when two Shift button pressed, only one keyUp event will be raised
-  if( (code == 'ShiftLeft' || code == 'ShiftRight') && !shiftKey ){
-    let shiftLeft = document.getElementById("ShiftLeft");
-    shiftLeft.classList.toggle('keyboard_button-pressed',false);
-    let shiftRight = document.getElementById("ShiftRight");
-    shiftRight.classList.toggle('keyboard_button-pressed',false);
+function handleButtonReleased(code, parameters={}){
+  let {shiftKey=false} = parameters;
+  let {isShiftKey} = getOptions();
+  switch (code){
+    case 'ShiftLeft':
+    case 'ShiftRight':
+      isShiftKey = shiftKey;
+      setOptions({isShiftKey});
+      break;
   }
 }
 
-function updateKeyboard(){
-  let currentLanguage = getCookie('currentLanguage');
-  let isAlternate = (getCookie('isAlternate') == 'true');
-  let keyboard = document.querySelectorAll(".keyboard_button");
-  keyboard.forEach( function(element){
-    let symbol = document.getElementById(element.id+'_symbol');
-    let alternate = document.getElementById(element.id+'_alternate');
-    let buttonSymbol = getButtonSymbol(element.id, currentLanguage);
-    if(buttonSymbol!==undefined){
-      let {symbol: sText, alternate: aText} = buttonSymbol;
-      if (isAlternate) {
-        [sText,aText] = [sText,aText].reverse();
-      }
-      if(sText==aText) {
-        aText = '';
-      }
-      [symbol.innerText,alternate.innerText] = [sText,aText];
-    }
-  });
-}
 
 function insertText(textArea, text){
   let p_start = textArea.selectionStart;
@@ -296,6 +266,72 @@ function getButtonSymbol(keycode, language=DEFAULT_LANGUAGE){
   return keyConfig['content'][language];
 }
 
+// end of text functions
+// ---------------------------------------------------------------------------------------
+
+
+// ---------------------------------------------------------------------------------------
+// keyboard view functions
+
+function setColorPressed (code){
+  let keyboard = document.querySelectorAll(".keyboard_button");
+  keyboard.forEach( function(element){
+    if(element.id==code){
+      element.classList.toggle('keyboard_button-pressed',true);
+    }
+  });
+}
+
+function setColorReleased(code){
+  let {isAlternate, isShiftKey} = getOptions();
+  let keyboard = document.querySelectorAll(".keyboard_button");
+  keyboard.forEach( function(element){
+    if(element.id==code){
+      switch (code){
+        case 'CapsLock':
+          element.classList.toggle('keyboard_button-pressed',isAlternate);
+          break;
+        default:
+          element.classList.toggle('keyboard_button-pressed',false);
+          break;
+      }
+    }
+  });
+  //fix: when two Shift button pressed, only one keyUp event will be raised
+  if( (code == 'ShiftLeft' || code == 'ShiftRight') && !isShiftKey ){
+    let shiftLeft = document.getElementById("ShiftLeft");
+    shiftLeft.classList.toggle('keyboard_button-pressed',false);
+    let shiftRight = document.getElementById("ShiftRight");
+    shiftRight.classList.toggle('keyboard_button-pressed',false);
+  }
+}
+
+function updateKeyboard(){
+  let {isAlternate, currentLanguage} = getOptions();
+  let keyboard = document.querySelectorAll(".keyboard_button");
+  keyboard.forEach( function(element){
+    let symbol = document.getElementById(element.id+'_symbol');
+    let alternate = document.getElementById(element.id+'_alternate');
+    let buttonSymbol = getButtonSymbol(element.id, currentLanguage);
+    if(buttonSymbol!==undefined){
+      let {symbol: sText, alternate: aText} = buttonSymbol;
+      if (isAlternate) {
+        [sText,aText] = [sText,aText].reverse();
+      }
+      if(sText==aText) {
+        aText = '';
+      }
+      [symbol.innerText,alternate.innerText] = [sText,aText];
+    }
+  });
+}
+
+// end of keyboard view functions
+// ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// initial functions
+
 function drawElements() {
   let textEditorWrapper = document.createElement("div");
   let textEditor = document.createElement("textarea");
@@ -341,44 +377,32 @@ function drawElements() {
   document.body.append(keyboardWrapper);
 }
 
-function initCookies(){
-  let currentLanguage = getCookie('currentLanguage');
-  if(currentLanguage===undefined){
-    setCookie('currentLanguage',DEFAULT_LANGUAGE);
-  }
-
-  let isAlternate = getCookie('isAlternate');
-  if(isAlternate===undefined){
-    setCookie('isAlternate',false);
-  }
+function initOptions(){
+  let storedOptions = sessionStorage.getItem('options');
+  if(storedOptions === null) {
+    let options = DEFAULT_OPTIONS;
+    sessionStorage.setItem('options', JSON.stringify(options));
+  } 
 }
 
-// get cookie with given name
-// or undefined if found nothing
-function getCookie(name) {
-  let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-  ));
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+// end of initial functions
+// ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// options functions
+function getOptions(){
+  let options = JSON.parse(sessionStorage.getItem('options'));
+  if (options!==null){
+    return options;
+  }
+  return DEFAULT_OPTIONS;
 }
 
-function setCookie(name, value, options = {}) {
-  options = {
-    path: '/',
-    ...options
-  };
-
-  if (options.expires!==undefined && options.expires.toUTCString) {
-    options.expires = options.expires.toUTCString();
-  }
-
-  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-  for (let optionKey in options) {
-    updatedCookie += "; " + optionKey;
-    let optionValue = options[optionKey];
-    if (optionValue !== true) {
-      updatedCookie += "=" + optionValue;
-    }
-  }
-  document.cookie = updatedCookie;
+function setOptions(options = {}){
+  let storedOptions = getOptions();
+  let newOptions = Object.assign(storedOptions,options);
+  sessionStorage.setItem('options',JSON.stringify(newOptions))
 }
+
+// end of options functions
+// ---------------------------------------------------------------------------------------
