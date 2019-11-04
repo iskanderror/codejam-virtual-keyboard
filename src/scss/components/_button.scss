@@ -30,6 +30,7 @@
   &-pressed {
     animation: press 0.25s;
     background-color: $additionalProjectColor;
+    border-radius: 20px;
 
     &:hover {
       background-color: $additionalHoverColor;

@@ -8,7 +8,14 @@ $keyHoverColor: darken($keyProjectColor,5%);
 $additionalProjectColor: complement($keyProjectColor);
 $additionalHoverColor: darken($additionalProjectColor,5%);
 
+
 @keyframes press {
-  from{background-color: $keyProjectColor;}
-  to{background-color: $additionalProjectColor;}
+  0% { 
+    background-color: $keyProjectColor;
+    border-radius: 0;
+  }
+  100% { 
+    background-color: $additionalProjectColor;
+    border-radius: 20px;
+  }
 }

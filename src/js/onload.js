@@ -110,10 +110,6 @@ function setOptions(options = {}) {
 
 // ---------------------------------------------------------------------------------------
 // hotkeys section
-const HOTKEYS = [
-  { set: ['ShiftLeft', 'AltLeft'], function: 'changeLanguage' },
-];
-const currentCombination = [];
 
 function changeLanguage() {
   let { currentLanguage } = getOptions();
@@ -126,12 +122,16 @@ function changeLanguage() {
   document.dispatchEvent(keyboardUpdateEvent);
 }
 
+const HOTKEYS = [
+  { set: ['ShiftLeft', 'AltLeft'], function: changeLanguage },
+];
+const currentCombination = [];
+
 function checkCombination(item) {
   const keySet = item.set;
   const combination = currentCombination.filter((key) => keySet.includes(key));
   if (combination.length === keySet.length) {
-    const func = item.function;
-    eval(func)();
+    item.function();
     currentCombination.length = 0;
   }
 }
@@ -270,7 +270,7 @@ function handleButtonPressed(textEditor, parameters = {}) {
     altKey = false,
   } = parameters;
 
-  let { isAlternate, currentLanguage, isShiftKey } = getOptions();
+  const { isAlternate, currentLanguage, isShiftKey } = getOptions();
 
   if ((ctrlKey || altKey) && !repeat) {
     if (!currentCombination.includes(code)) {
@@ -284,8 +284,7 @@ function handleButtonPressed(textEditor, parameters = {}) {
     case 'ShiftLeft':
     case 'ShiftRight':
       if (!repeat) {
-        isShiftKey = true;
-        setOptions({ 'isShiftKey' : true });
+        setOptions({ isShiftKey: true });
       }
       break;
     case 'MetaLeft':
@@ -293,8 +292,7 @@ function handleButtonPressed(textEditor, parameters = {}) {
 
     case 'CapsLock':
       if (!repeat) {
-        isAlternate = !isAlternate;
-        setOptions({ isAlternate });
+        setOptions({ isAlternate: !isAlternate });
         document.dispatchEvent(keyboardUpdateEvent);
       }
       break;
@@ -303,9 +301,6 @@ function handleButtonPressed(textEditor, parameters = {}) {
     case 'ControlRight':
     case 'AltLeft':
     case 'AltRight':
-      if (!repeat) {
-        changeLanguage();
-      }
       break;
 
     case 'ArrowLeft':
@@ -470,7 +465,7 @@ function drawElements() {
 // ---------------------------------------------------------------------------------------
 
 window.addEventListener('load', () => {
-  setOptions();
+  setOptions({ isShiftKey: false });
   drawElements();
 
   document.addEventListener('keyboardUpdate', updateKeyboard, false);
